@@ -57,12 +57,6 @@ logits = model(x, mode="ct_mr")       # [B, 15, D, H, W]
 debug = model(x, return_debug=True, mode="ct_mr")
 ```
 
-The package also keeps backward-compatible aliases:
-
-```python
-from hgapmf import EXP018Config, HGAPMF_EXP018_Net
-```
-
 ## CT/MR Preprocessing
 
 

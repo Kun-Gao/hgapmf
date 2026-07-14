@@ -20,6 +20,9 @@ This is the official PyTorch implementation of the model:
   - CT clipping and normalization
   - MR foreground z-score normalization
   - 3D padding and patch cropping helpers
+- `hgapmf/augmentation.py`
+  - synchronized random 3D flip for CT/MR/label
+  - optional intensity scale/shift, Gaussian noise, and gamma augmentation
 - `smoke_test.py`
 
 ## Dependency
@@ -86,6 +89,35 @@ ct_patch, mr_patch, label_patch = foreground_random_crop_3d(
     patch_size=(128, 128, 128),
 )
 ```
+
+## Optional Data Augmentation
+
+The augmentation helpers are lightweight NumPy utilities. Spatial flips are
+applied synchronously to CT, MR, and labels. Intensity perturbations are applied
+only to CT/MR images.
+
+```python
+from hgapmf import AugmentationConfig, augment_ct_mr_3d
+
+aug_cfg = AugmentationConfig(
+    flip_prob=0.5,
+    intensity_scale_prob=0.15,
+    intensity_shift_prob=0.15,
+    gaussian_noise_prob=0.15,
+    gamma_prob=0.15,
+)
+
+ct_patch, mr_patch, label_patch = augment_ct_mr_3d(
+    ct_patch,
+    mr_patch,
+    label_patch,
+    config=aug_cfg,
+)
+```
+
+This package intentionally does not depend on nnU-Net. Advanced spatial
+augmentations such as elastic deformation, arbitrary rotation, and scaling are
+left to the user's training framework.
 
 ## Forward Modes
 

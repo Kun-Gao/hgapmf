@@ -1,3 +1,12 @@
+from .augmentation import (
+    AugmentationConfig,
+    apply_intensity_augmentations,
+    augment_ct_mr_3d,
+    random_flip_3d,
+    random_gamma,
+    random_gaussian_noise,
+    random_intensity_scale_shift,
+)
 from .model import (
     Config,
     HGAPMFBlock,
@@ -46,6 +55,13 @@ __all__ = [
     "random_crop_3d",
     "foreground_random_crop_3d",
     "center_crop_3d",
+    "AugmentationConfig",
+    "random_flip_3d",
+    "random_intensity_scale_shift",
+    "random_gaussian_noise",
+    "random_gamma",
+    "apply_intensity_augmentations",
+    "augment_ct_mr_3d",
     "EXP018Config",
     "EXP018_OUTPUT_CHANNELS",
     "EXP018_PROGRESSIVE_LABEL_MAPS",

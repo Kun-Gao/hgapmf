@@ -16,11 +16,15 @@ This is the official PyTorch implementation of the model:
   - `ct_mr`, `ct_only`, and `mr_only` forward modes
 - `hgapmf/spatial_refinement_cue.py`
   - `SpatialRefinementCuePredictor`
+- `hgapmf/preprocessing.py`
+  - CT clipping and normalization
+  - MR foreground z-score normalization
+  - 3D padding and patch cropping helpers
 - `smoke_test.py`
 
 ## Dependency
 
-Only PyTorch is required.
+PyTorch and NumPy are required.
 
 ```bash
 pip install -r requirements.txt
@@ -30,13 +34,13 @@ pip install -r requirements.txt
 
 ```python
 import torch
-from hgapmf import EXP018Config, HGAPMF_EXP018_Net
+from hgapmf import Config, HGAPMFNet
 
-model = HGAPMF_EXP018_Net(
+model = HGAPMFNet(
     in_channels=2,
     num_classes=15,
     base_channels=16,
-    exp018_config=EXP018Config(
+    config=Config(
         prototype_dim=32,
         prototype_nums=(8, 16, 32),
         max_tokens=(64, 64, 128),
@@ -48,6 +52,39 @@ model = HGAPMF_EXP018_Net(
 x = torch.randn(1, 2, 128, 128, 128)  # channel 0 = CT, channel 1 = MR
 logits = model(x, mode="ct_mr")       # [B, 15, D, H, W]
 debug = model(x, return_debug=True, mode="ct_mr")
+```
+
+The package also keeps backward-compatible aliases:
+
+```python
+from hgapmf import EXP018Config, HGAPMF_EXP018_Net
+```
+
+## CT/MR Preprocessing
+
+The preprocessing helpers are NumPy-only and do not depend on nnU-Net.
+
+```python
+import torch
+from hgapmf import normalize_ct, normalize_mri, stack_ct_mr
+
+ct = normalize_ct(ct_volume, ct_clip=(-1000.0, 2000.0), method="zscore")
+mr = normalize_mri(mr_volume)
+x = torch.from_numpy(stack_ct_mr(ct, mr)).unsqueeze(0)  # [1, 2, D, H, W]
+logits = model(x, mode="ct_mr")
+```
+
+Patch helpers are available for training pipelines:
+
+```python
+from hgapmf import foreground_random_crop_3d
+
+ct_patch, mr_patch, label_patch = foreground_random_crop_3d(
+    ct,
+    mr,
+    label,
+    patch_size=(128, 128, 128),
+)
 ```
 
 ## Forward Modes

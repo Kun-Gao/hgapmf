@@ -65,7 +65,6 @@ from hgapmf import EXP018Config, HGAPMF_EXP018_Net
 
 ## CT/MR Preprocessing
 
-The preprocessing helpers are NumPy-only and do not depend on nnU-Net.
 
 ```python
 import torch
@@ -115,10 +114,6 @@ ct_patch, mr_patch, label_patch = augment_ct_mr_3d(
 )
 ```
 
-This package intentionally does not depend on nnU-Net. Advanced spatial
-augmentations such as elastic deformation, arbitrary rotation, and scaling are
-left to the user's training framework.
-
 ## Forward Modes
 
 - `mode="ct_mr"`: complete CT + MR input.
@@ -159,7 +154,7 @@ python smoke_test.py --device cuda --shape 64 64 64 --base-channels 4 --prototyp
 
 ## Notes For Training Integration
 
-This folder does not include the training code. The complete implementation will be made publicly available upon acceptance of the paper:
+This folder does not include the training code. The complete implementation will be made publicly available upon acceptance of the paper, including:
 
 - segmentation loss for `S2/S4/S8/S14`
 - progressive target mapping using `PROGRESSIVE_LABEL_MAPS`

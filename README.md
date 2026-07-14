@@ -2,7 +2,7 @@
 
 This is the official PyTorch implementation of the model:
 
-**HG-APMF: HyperGraph-guided Anatomical Prototype Multimodal Fusion**
+**HG-APMF: Hypergraph-guided Anatomical Prototype Multimodal Fusion**
 
 ## What Is Included
 

@@ -23,7 +23,6 @@ This is the official PyTorch implementation of the model:
 - `hgapmf/augmentation.py`
   - synchronized random 3D flip for CT/MR/label
   - optional intensity scale/shift, Gaussian noise, and gamma augmentation
-- `smoke_test.py`
 
 ## Dependency
 
@@ -131,20 +130,6 @@ Raw labels are assumed to be:
 - `1..14`: foreground anatomical classes
 
 The progressive label maps are exposed as `PROGRESSIVE_LABEL_MAPS`.
-
-## Smoke Test
-
-CPU:
-
-```bash
-python smoke_test.py --device cpu --shape 64 64 64 --base-channels 4 --prototype-dim 16
-```
-
-CUDA:
-
-```bash
-python smoke_test.py --device cuda --shape 64 64 64 --base-channels 4 --prototype-dim 16
-```
 
 ## Notes For Training Integration
 
